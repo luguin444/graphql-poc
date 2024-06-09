@@ -7,6 +7,8 @@ export const linkTypes = gql`
     url: String!
     userId: ID!
     user: User!
+    createdAt: Date!
+    updatedAt: Date!
   }
 `;
 

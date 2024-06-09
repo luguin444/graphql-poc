@@ -6,6 +6,7 @@ import { modelsTypes } from "../../schemas/models";
 
 test("typeDefs should have correct fields", () => {
   expect(typeDefs).toEqual(gql`
+    scalar Date
     ${queriesTypes}
     ${mutationTypes}
     ${modelsTypes}

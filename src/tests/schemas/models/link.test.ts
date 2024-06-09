@@ -9,6 +9,8 @@ test("link should have correct fields", () => {
       url: String!
       userId: ID!
       user: User!
+      createdAt: Date!
+      updatedAt: Date!
     }
   `);
 });

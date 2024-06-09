@@ -1,16 +1,23 @@
-import { Link } from "@prisma/client";
-import { prisma } from "../../config/prisma";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { GraphQLError } from "graphql";
+import { ContextType } from "../../shared/protocols";
 
-const getFeed = async () => {
-  const links = await prisma.link.findMany();
+const getFeed = async (
+  _parent: unknown,
+  _args: unknown,
+  context: ContextType
+) => {
+  const links = await context.prisma.link.findMany({ include: { user: true } });
 
-  return links.map((link) => serializeLink(link));
+  return links;
 };
 
-const getLinkById = async (_parent: unknown, args: { id: string }) => {
-  const link = await prisma.link.findUnique({
+const getLinkById = async (
+  _parent: unknown,
+  args: { id: string },
+  context: ContextType
+) => {
+  const link = await context.prisma.link.findUnique({
     where: {
       id: parseInt(args.id),
     },
@@ -18,14 +25,15 @@ const getLinkById = async (_parent: unknown, args: { id: string }) => {
 
   if (!link) return undefined;
 
-  return serializeLink(link);
+  return link;
 };
 
 const createLink = async (
   _parent: unknown,
-  args: { description: string; url: string; userId: string }
+  args: { description: string; url: string; userId: string },
+  context: ContextType
 ) => {
-  const link = await prisma.link
+  const link = await context.prisma.link
     .create({
       data: {
         description: args.description,
@@ -46,14 +54,15 @@ const createLink = async (
       }
     });
 
-  return link && serializeLink(link);
+  return link;
 };
 
 const updateLink = async (
   _parent: unknown,
-  args: { id: string; url: string; description: string }
+  args: { id: string; url: string; description: string },
+  context: ContextType
 ) => {
-  const link = await prisma.link.update({
+  const link = await context.prisma.link.update({
     where: {
       id: parseInt(args.id),
     },
@@ -65,11 +74,15 @@ const updateLink = async (
 
   if (!link) return undefined;
 
-  return serializeLink(link);
+  return link;
 };
 
-const deleteLink = async (_parent: unknown, args: { id: string }) => {
-  const link = await prisma.link.delete({
+const deleteLink = async (
+  _parent: unknown,
+  args: { id: string },
+  context: ContextType
+) => {
+  const link = await context.prisma.link.delete({
     where: {
       id: parseInt(args.id),
     },
@@ -77,16 +90,7 @@ const deleteLink = async (_parent: unknown, args: { id: string }) => {
 
   if (!link) return undefined;
 
-  return serializeLink(link);
-};
-
-const serializeLink = (link: Link) => {
-  return {
-    id: link.id.toString(),
-    url: link.url,
-    description: link.description,
-    userId: link.userId.toString(),
-  };
+  return link;
 };
 
 export const linkQueries = {

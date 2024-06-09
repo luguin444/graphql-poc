@@ -8,6 +8,8 @@ test("user should have correct fields", () => {
       name: String!
       email: String!
       links: [Link!]!
+      createdAt: Date!
+      updatedAt: Date!
     }
   `);
 });

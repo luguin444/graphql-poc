@@ -6,6 +6,8 @@ export const userTypes = gql`
     name: String!
     email: String!
     links: [Link!]!
+    createdAt: Date!
+    updatedAt: Date!
   }
 `;
 
