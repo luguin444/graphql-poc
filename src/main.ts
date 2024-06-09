@@ -1,3 +1,4 @@
+import "./config/env";
 const { ApolloServer } = require("apollo-server");
 import { resolvers } from "./resolvers";
 import { typeDefs } from "./schemas";
