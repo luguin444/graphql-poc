@@ -5,7 +5,7 @@ const getUserById = async (
   args: { id: string },
   context: ContextType
 ) => {
-  console.log("hey", context.isAuthenticated);
+  console.log("hey", context.isAuthenticated); // Daria para retornar não autroizado aqui
 
   const user = await context.prisma.user.findUnique({
     where: {
@@ -36,10 +36,24 @@ const createUser = async (
   return user;
 };
 
+const updateUser = async (
+  _parent: unknown,
+  args: any,
+  context: ContextType
+) => {
+  const user = await context.prisma.user.update({
+    where: { id: parseInt(args.id) },
+    data: { name: args.name, email: args.email },
+  });
+
+  return user;
+};
+
 export const userQueries = {
   getUserById,
 };
 
 export const userMutations = {
   createUser,
+  updateUser,
 };

@@ -6,5 +6,6 @@ export const mutationTypes = gql`
     updateLink(id: ID!, url: String, description: String): Link
     deleteLink(id: ID!): Link
     createUser(name: String!, email: String!): User!
+    updateUser(id: ID!, name: String, email: String): User
   }
 `;
